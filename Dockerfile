@@ -9,11 +9,10 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+# todo: update package
 RUN apt-get update && \
     apt-get install -y \
-        apt-utils \
         git \
-        postgresql postgresql-contrib \
         python3-dev \
         supervisor \
         nano
