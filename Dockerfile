@@ -25,3 +25,5 @@ RUN pip install -r requirements.txt
 
 # copy project
 COPY . /app
+COPY ./build /app/build
+#RUN cp -r /app/build/transaltions/* /usr/local/lob/python3.8/site-packages/

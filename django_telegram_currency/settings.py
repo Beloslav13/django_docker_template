@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'django_telegram_currency.apps.CurrencyConfig'
+    'django_telegram_currency.apps.CurrencyConfig',
+
+    'celery',
+    'django_telegram_currency.apps.CeleryBeatConfig',
+    'django_telegram_currency.apps.CeleryResultsConfig'
 ]
 
 MIDDLEWARE = [
@@ -104,6 +108,16 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+CELERY_DEFAULT_QUEUE = 'django_telegram_currency'
+
+
+LOCALE_PATHS = [
+    os.path.join('build', 'translations', 'django_celery_beat', 'locale'),
+]
+
+# ln -s /usr/local/lib/python3.8/site-packages/django_celery_beat ./
+# cp -R ./usr/l/ru/ ./build/translations/django_celery_beat/locale/
 
 
 # Internationalization
