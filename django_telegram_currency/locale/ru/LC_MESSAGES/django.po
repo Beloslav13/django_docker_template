@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-19 12:12+0300\n"
-"PO-Revision-Date: 2021-01-17 18:10+0300\n"
+"POT-Creation-Date: 2021-01-26 14:50+0000\n"
+"PO-Revision-Date: 2021-01-19 13:22+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -20,27 +20,30 @@ msgstr ""
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Generator: Poedit 2.4.2\n"
 
-#: django_telegram_currency/apps.py:9
-#: django_telegram_currency/models/currency.py:15
+#: apps.py:9 models/currency.py:15
 msgid "Currencies"
 msgstr "Валюты"
 
-#: django_telegram_currency/apps.py:14 django_telegram_currency/apps.py:20
-msgid "Django Celery"
-msgstr ""
-
-#: django_telegram_currency/models/currency.py:6
-#: django_telegram_currency/models/currency.py:14
+#: models/currency.py:6 models/currency.py:14
 msgid "Currency"
 msgstr "Валюта"
 
-#: django_telegram_currency/models/currency.py:7
+#: models/currency.py:7
 msgid "Course"
 msgstr "Курс"
 
-#: django_telegram_currency/models/currency.py:8
+#: models/currency.py:8
 msgid "Updated at"
 msgstr "Обновлено"
+
+#: models/currency.py:11
+#, fuzzy
+#| msgid "Currency {self.name}, value: {self.value}"
+msgid "Currency {self.name}, value: {str(self.value)}"
+msgstr "Валюта {self.name}, курс: {self.value}"
+
+#~ msgid "Django Celery"
+#~ msgstr "Фоновые задания"
 
 #, fuzzy
 #~| msgid "Currency"

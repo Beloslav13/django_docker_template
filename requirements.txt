@@ -7,8 +7,6 @@ click-didyoumean==0.0.3
 click-plugins==1.1.1
 click-repl==0.1.6
 Django==3.1.5
-django-celery-beat==2.1.0
-django-celery-results==2.0.0
 django-timezone-field==4.1.1
 kombu==5.0.2
 prompt-toolkit==3.0.10
@@ -16,6 +14,7 @@ psycopg2-binary==2.8.6
 python-crontab==2.5.1
 python-dateutil==2.8.1
 pytz==2020.5
+redis==3.5.3
 six==1.15.0
 sqlparse==0.4.1
 vine==5.0.0

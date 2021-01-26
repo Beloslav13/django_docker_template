@@ -9,13 +9,13 @@ class CurrencyConfig(AppConfig):
     verbose_name = _('Currencies')
 
 
-class CeleryBeatConfig(AppConfig):
-    name = 'django_celery_beat'
-    verbose_name = _('Django Celery')
-    logger = logging.getLogger('django_celery_beat')
-
-
-class CeleryResultsConfig(AppConfig):
-    name = 'django_celery_results'
-    verbose_name = _('Django Celery')
-    logger = logging.getLogger('django_celery_results')
+# class CeleryBeatConfig(AppConfig):
+#     name = 'django_celery_beat'
+#     verbose_name = _('Django Celery')
+#     logger = logging.getLogger('django_celery_beat')
+#
+#
+# class CeleryResultsConfig(AppConfig):
+#     name = 'django_celery_results'
+#     verbose_name = _('Django Celery')
+#     logger = logging.getLogger('django_celery_results')

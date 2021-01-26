@@ -4,7 +4,8 @@ from django_telegram_currency.models.currency import Currency
 
 
 class CurrencyAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'name', 'value', 'updated_at')
+    list_display_links = ('id', 'name', 'value', 'updated_at')
 
 
 admin.site.register(Currency, CurrencyAdmin)

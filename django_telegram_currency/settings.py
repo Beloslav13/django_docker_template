@@ -10,9 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from celery.schedules import crontab
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -20,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("PROJ_SECRET_KEY")
+SECRET_KEY = '80g^xkc5ho+ndzbzi82k*q68g%vbws)dsh&i993m1_#k&bb$i3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,9 +43,9 @@ INSTALLED_APPS = [
 
     'django_telegram_currency.apps.CurrencyConfig',
 
-    'celery',
-    'django_telegram_currency.apps.CeleryBeatConfig',
-    'django_telegram_currency.apps.CeleryResultsConfig'
+    # 'celery',
+    # 'django_telegram_currency.apps.CeleryBeatConfig',
+    # 'django_telegram_currency.apps.CeleryResultsConfig'
 ]
 
 MIDDLEWARE = [
@@ -109,16 +112,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CELERY_DEFAULT_QUEUE = 'django_telegram_currency'
 
 
 LOCALE_PATHS = [
-    os.path.join('build', 'translations', 'django_celery_beat', 'locale'),
+    os.path.join('django_telegram_currency', 'locale'),
+    # os.path.join('build', 'translations', 'django_celery_results', 'locale'),
+    # os.path.join('build', 'translations', 'django_celery_beat', 'locale'),
 ]
 
-# ln -s /usr/local/lib/python3.8/site-packages/django_celery_beat ./
-# cp -R ./usr/l/ru/ ./build/translations/django_celery_beat/locale/
 
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

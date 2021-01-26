@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 
 
 class Currency(models.Model):
@@ -8,7 +8,7 @@ class Currency(models.Model):
     updated_at = models.DateTimeField(blank=True, null=True, verbose_name=_('Updated at'))
 
     def __str__(self):
-        return f'Currency {self.name}, value: {self.value}'
+        return _(f'Currency {self.name}, value: {str(self.value)}')
 
     class Meta:
         verbose_name = _('Currency')
