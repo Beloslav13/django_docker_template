@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-26 14:50+0000\n"
-"PO-Revision-Date: 2021-01-19 13:22+0300\n"
+"POT-Creation-Date: 2021-01-27 14:23+0000\n"
+"PO-Revision-Date: 2021-01-27 17:24+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -37,10 +37,16 @@ msgid "Updated at"
 msgstr "Обновлено"
 
 #: models/currency.py:11
-#, fuzzy
-#| msgid "Currency {self.name}, value: {self.value}"
 msgid "Currency {self.name}, value: {str(self.value)}"
 msgstr "Валюта {self.name}, курс: {self.value}"
+
+#: models/currency.py:31
+msgid "Currency USD"
+msgstr "Валюта USD"
+
+#: models/currency.py:32
+msgid "Currencies USD"
+msgstr "Валюты USD"
 
 #~ msgid "Django Celery"
 #~ msgstr "Фоновые задания"

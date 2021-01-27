@@ -1,35 +1,5 @@
 version: '3.7'
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command:
-      - /bin/bash
-      - '-c'
-      - sleep 1d
-    volumes:
-      - .:/app
-    ports:
-      - 8000:8000
-    environment:
-      - CELERY_BROKER=redis://redis:6379/0
-      - CELERY_BACKEND=redis://redis:6379/0
-    env_file:
-      - .env
-    depends_on:
-      - db
-      - redis
-  celery:
-    build: .
-    command: celery -A django_telegram_currency worker -l INFO
-    volumes:
-    - .:/usr/src/app
-    depends_on:
-      - app
-      - redis
-  redis:
-    image: "redis:alpine"
   db:
     build: db
     env_file: .env
@@ -38,3 +8,38 @@ services:
     volumes:
       - '${DOCKER_PROJ_PATH}/db/psql:/var/lib/postgresql/data/'
     restart: always
+  celery:
+    build: .
+    command: celery -A django_telegram_currency worker -l INFO
+    volumes:
+    - .:/usr/src/app
+    depends_on:
+      - db
+  redis:
+    build: redis
+    restart: always
+  app:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      command:
+        - /bin/bash
+        - '-c'
+        - sleep 1d
+      volumes:
+        - .:/app
+      ports:
+        - 8000:8000
+      links:
+        - 'db:db'
+        - 'celery:celery'
+        - 'redis:redis'
+      environment:
+        - CELERY_BROKER=redis://redis:6379/0
+        - CELERY_BACKEND=redis://redis:6379/0
+      env_file:
+        - .env
+      depends_on:
+        - db
+        - redis
+        - celery
