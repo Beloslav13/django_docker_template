@@ -58,19 +58,23 @@ class Currency(models.Model):
                     })
             return data
 
-    def get_currency(self):
+    def start_task_set_cache_currency(self):
         from django_telegram_currency.tasks import set_cache_currency
+        set_cache_currency.apply_async(
+            kwargs={
+                'cache_key': self.CURRENCY_CACHE_KEY,
+                'cache_duration': self.CURRENCY_CACHE_DURATION
+            }
+        )
+
+    def get_currency(self):
         currency_data = cache.get(self.CURRENCY_CACHE_KEY, None)
         if currency_data is None:
-            set_cache_currency.apply_async(
-                kwargs={
-                    'cache_key': self.CURRENCY_CACHE_KEY,
-                    'cache_duration': self.CURRENCY_CACHE_DURATION
-                }
-            )
+            self.start_task_set_cache_currency()
         else:
-            print('value', currency_data)
-            return currency_data
+            time.sleep(5)
+            try_currency_data = cache.get(self.CURRENCY_CACHE_KEY, None)
+            return try_currency_data if try_currency_data is not None else ""
 
     def update_currency_value(self):
         """Тестовое обновление валюты"""
@@ -83,6 +87,3 @@ class Currency(models.Model):
         for currency in currencies:
             setattr(currency, 'value', currency_data['value'])
             currency.save()
-
-    def set_cache_currency(self):
-        pass
