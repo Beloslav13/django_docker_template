@@ -1,12 +1,17 @@
+import time
+
 import requests
 
 import xml.dom.minidom
 
 from django.db import models
+from django.core.cache import cache
 from django.utils.translation import ugettext as _
 
 
 class Currency(models.Model):
+    CURRENCY_CACHE_KEY = 'currency_value'
+    CURRENCY_CACHE_DURATION = 1000
 
     CURRENCY_UNDEFINED = 0
     CURRENCY_USD = 10
@@ -30,7 +35,8 @@ class Currency(models.Model):
         verbose_name = _('Currency')
         verbose_name_plural = _('Currencies')
 
-    def parse_currency(self):
+    @staticmethod
+    def parse_currency():
         base_url = 'https://www.cbr-xml-daily.ru/daily_utf8.xml'
         try:
             resp = requests.get(base_url)
@@ -48,12 +54,35 @@ class Currency(models.Model):
                     value = value.replace(',', '.')
                     data.update({
                         "name": name,
-                        "value": value
+                        "value": float(value)
                     })
             return data
 
     def get_currency(self):
-        raise NotImplementedError()
+        from django_telegram_currency.tasks import set_cache_currency
+        currency_data = cache.get(self.CURRENCY_CACHE_KEY, None)
+        if currency_data is None:
+            set_cache_currency.apply_async(
+                kwargs={
+                    'cache_key': self.CURRENCY_CACHE_KEY,
+                    'cache_duration': self.CURRENCY_CACHE_DURATION
+                }
+            )
+        else:
+            print('value', currency_data)
+            return currency_data
+
+    def update_currency_value(self):
+        """Тестовое обновление валюты"""
+        currencies = Currency.objects.all()
+        currency_data = cache.get(self.CURRENCY_CACHE_KEY, None)
+        if currency_data is None:
+            self.get_currency()
+            time.sleep(10)
+        currency_data = cache.get(self.CURRENCY_CACHE_KEY, None)
+        for currency in currencies:
+            setattr(currency, 'value', currency_data['value'])
+            currency.save()
 
     def set_cache_currency(self):
         pass
