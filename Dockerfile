@@ -1,8 +1,7 @@
 # pull official base image
 FROM python:3.8
 
-RUN mkdir /app \
-          /var/log/app
+RUN mkdir /app /var/log/app
 # set work directory
 WORKDIR /app
 
