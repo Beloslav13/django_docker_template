@@ -22,8 +22,6 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
-#COPY config/supervisor.conf /etc/supervisor/conf.d/django_telegram_currency.conf
-
 # copy project
 COPY . /app
-COPY ./build /app/build
+#COPY ./build /app/build

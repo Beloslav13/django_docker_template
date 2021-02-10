@@ -1,17 +1,40 @@
-**Сборка проекта локально:**
+**Шаблон Django-Docker-Redis-Celery**
 
-- склонировать репозиторий
-- зайти в каталог django_telegram_currency
-- в корне проекта создать файл .env и прописать туда переменные
-  - **DOCKER_PROJ_PATH**: пусть где лежит проект
-  - **POSTGRES_USER POSTGRES_DB POSTGRES_PASSWORD POSTGRES_HOST POSTGRES_PORT PGDATA PROJ_SECRET_KEY**
-    
+В **settings.py** необходимо добавить следующее:
 
-- сделать билд проекта `(docker-compose build)`
-- запустить (если у вас Linux)
-    - `docker exec -it --user $(id -u):$(id -g) django_telegram_currency_app_1 bash`
-    - остальные OC `docker exec -it django_telegram_currency_app_1 bash`
-- если база данных была новая то создать и применить миграции
-- `python manage.py makemigrations python manage.py migrate`
-- если база данных есть `python manage.py migrate`
-- запустить сервер `python manage.py runserver 0.0.0.0:8000`
+```
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+```
+
+**celery.py**:
+```
+import os
+
+from django.conf import settings
+
+from celery import Celery
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'some_app.settings')
+
+app = Celery('some_app')
+app.config_from_object('django.conf:settings', namespace='CELERY')
+app.autodiscover_tasks()
+
+
+@app.task(bind=True, name='debug_task')
+def debug_task(self):
+    print(f'Request: {self.request!r}')
+```
+
+Каталог **redis** должен находиться в django приложение.
