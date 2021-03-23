@@ -1,0 +1,35 @@
+version: '3.7'
+
+
+services:
+  db:
+    build:
+      context: ./docker/postgres
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_PASSWORD=${PASSWORD_DB}
+    env_file:
+      - .env
+    volumes:
+      - ./docker/postgres/init.sql:/docker-entrypoint-init.d/init.sql
+      - ./docker/db:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    restart: always
+  app:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      command:
+        - /bin/bash
+        - '-c'
+#        - exec gunicorn docker_tmp.wsgi:application -b 0.0.0.0:8000 --reload
+        - sleep 1d
+      volumes:
+        - .:/app
+      ports:
+        - 8000:8000
+      env_file:
+        - .env
+      depends_on:
+        - db

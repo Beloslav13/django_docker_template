@@ -1,0 +1,4 @@
+CREATE USER admin WITH PASSWORD 'devpass';
+
+CREATE DATABASE docker_tmp_db;
+GRANT ALL PRIVILEGES ON DATABASE docker_tmp_db TO admin;

@@ -9,19 +9,16 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# todo: update package
-RUN apt-get update && \
-    apt-get install -y \
-        git \
-        gettext \
-        python3-dev \
-        nano
+COPY requirements.txt .
+#COPY entrypoint.sh .
 
 # install dependencies
 RUN pip install --upgrade pip
-COPY ./requirements.txt .
 RUN pip install -r requirements.txt
+#RUN chmod 777 entrypoint.sh && chmod 777 /app/entrypoint.sh
+
 
 # copy project
-COPY . /app
-#COPY ./build /app/build
+COPY . .
+
+#ENTRYPOINT ["/app/entrypoint.sh"]
