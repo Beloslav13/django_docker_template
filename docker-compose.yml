@@ -23,6 +23,7 @@ services:
       command:
         - /bin/bash
         - '-c'
+# Запуск gunicorn
 #        - exec gunicorn docker_tmp.wsgi:application -b 0.0.0.0:8000 --reload
         - sleep 1d
       volumes:
