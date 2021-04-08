@@ -1,6 +1,5 @@
 version: '3.7'
 
-
 services:
   db:
     build:
@@ -16,6 +15,22 @@ services:
     ports:
       - 5432:5432
     restart: always
+  redis:
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A docker_tmp worker -l info
+    volumes:
+    - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
   app:
       build:
         context: .
@@ -23,8 +38,6 @@ services:
       command:
         - /bin/bash
         - '-c'
-# Запуск gunicorn
-#        - exec gunicorn docker_tmp.wsgi:application -b 0.0.0.0:8000 --reload
         - sleep 1d
       volumes:
         - .:/app
@@ -34,3 +47,5 @@ services:
         - .env
       depends_on:
         - db
+        - redis
+        - celery
