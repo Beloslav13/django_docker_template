@@ -55,7 +55,7 @@ services:
 # Для первого запуска необходимо сразу применить миграции celery_beat, потом закомментировать если не нужно.
         - python manage.py migrate && sleep 1d
 # Последующие запуски
-        - sleep 1d
+#        - sleep 1d
 # Для запуска celery celery_beat через супервизор
 #        - service supervisor start && sleep 1d
       volumes:
